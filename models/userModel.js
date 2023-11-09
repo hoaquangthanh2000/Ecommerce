@@ -43,6 +43,9 @@ var userSchema = new mongoose.Schema(
     },
     address: [{ type: mongoose.Schema.ObjectId, ref: "Address" }],
     wishlish: [{ type: mongoose.Schema.ObjectId, ref: "Product" }],
+    refreshToken: {
+      type: String,
+    },
   },
   {
     timestamps: true,
