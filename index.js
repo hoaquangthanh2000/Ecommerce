@@ -8,8 +8,10 @@ const productRouter = require("./routes/productRoute");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const { notFound, errorHandler } = require("./middlewares/errorHandler");
-
+const morgan = require("morgan");
 dbConnect();
+
+app.use(morgan("dev"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
