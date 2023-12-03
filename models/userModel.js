@@ -64,7 +64,7 @@ userSchema.pre("save", async function (next) {
   this.password = await bcrypt.hash(this.password, salt);
 });
 
-userSchema.method.createPasswordResetToken = async function () {
+userSchema.methods.createPasswordResetToken = async function () {
   const resetToken = crypto.randomBytes(32).toString("hex");
   this.passwordResetToken = crypto
     .createHash("sha256")

@@ -4,6 +4,7 @@ const asyncHandler = require("express-async-handler");
 const validateMongoDbId = require("../utils/validateMongodbId");
 const { generateRefreshToken } = require("../config/refreshtoken");
 const jwt = require("jsonwebtoken");
+const sendEmail = require("./emailController");
 
 // Create User
 const createUser = asyncHandler(async (req, res) => {
@@ -205,6 +206,28 @@ const updatePassword = asyncHandler(async (req, res) => {
   }
 });
 
+const forgotPassword = asyncHandler(async (req, res) => {
+  const { email } = req.body;
+  const user = await User.findOne({ email });
+  if (!user) throw new Error("User not found with this email");
+  try {
+    const token = await user.createPasswordResetToken();
+    await user.save();
+    const resetURL = `Hi, please follow this link to reset Your Password . This link is valid till 10 minutes from now. <a href='http://localhost:5000/api/user/reset-password${token}'>Click Here.<a/>`;
+    const data = {
+      to: email,
+      text: "hey user",
+      subject: "Forgot password link",
+      htm: resetURL,
+    };
+    console.log("data", data);
+    sendEmail(data);
+    res.json(token);
+  } catch (err) {
+    throw new Error(err);
+  }
+});
+
 module.exports = {
   createUser,
   loginUserCtrl,
@@ -217,4 +240,5 @@ module.exports = {
   handleRefreshToken,
   logout,
   updatePassword,
+  forgotPassword,
 };

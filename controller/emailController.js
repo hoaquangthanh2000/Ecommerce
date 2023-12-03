@@ -2,23 +2,23 @@ const nodeMailer = require("nodemailer");
 const asyncHandler = require("express-async-handler");
 
 const sendEmail = asyncHandler(async (data, req, res) => {
-  const transporter = nodemailer.createTransport({
-    host: "smtp.forwardemail.net",
+  let transporter = nodeMailer.createTransport({
+    host: "smtp.gmail.com",
     port: 465,
     secure: true,
     auth: {
-      // TODO: replace `user` and `pass` values from <https://forwardemail.net>
-      user: "REPLACE-WITH-YOUR-ALIAS@YOURDOMAIN.COM",
-      pass: "REPLACE-WITH-YOUR-GENERATED-PASSWORD",
+      user: "medicalmanex@gmail.com",
+      pass: "ssupizqshqqstyrs",
     },
   });
-  const info = await transporter.sendMail({
-    from: '"Fred Foo 👻" <foo@example.com>', // sender address
-    to: "bar@example.com, baz@example.com", // list of receivers
-    subject: "Hello ✔", // Subject line
-    text: "Hello world?", // plain text body
-    html: "<b>Hello world?</b>", // html body
+  let info = await transporter.sendMail({
+    from: "medicalmanex@gmail.com",
+    to: data.to,
+    subject: data.subject,
+    text: data.text,
+    htm: data.html,
   });
+  console.log("info", info);
 });
 
-module.exports = { sendEmail };
+module.exports = sendEmail;
